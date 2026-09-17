@@ -30,7 +30,6 @@ class PracticeMode:
 
         self.red_flash_timer = 0
 
-        self.finished = False
         self.completed = False
 
     # ========================================================
@@ -88,6 +87,29 @@ class PracticeMode:
             self.june.take_damage()
 
     # ========================================================
+    # PROJECTILE COLLISION
+    # ========================================================
+
+    def check_projectile_hit(self):
+        if self.june.hearts <= 0:
+            return
+
+        june_rect = pygame.Rect(
+            self.june.x - config.DISPLAY_SIZE // 2,
+            self.june.y - config.DISPLAY_SIZE // 2,
+            config.DISPLAY_SIZE,
+            config.DISPLAY_SIZE,
+        )
+
+        surviving = []
+        for projectile in self.projectiles:
+            if projectile.get_hitbox().colliderect(june_rect):
+                self.june.take_damage()
+            else:
+                surviving.append(projectile)
+        self.projectiles = surviving
+
+    # ========================================================
     # UPDATE
     # ========================================================
 
@@ -105,11 +127,12 @@ class PracticeMode:
         if self.june.hearts <= 0:
             return
 
-        self.june.update(dt, True)
+        self.june.update(dt)
         self.monster.update(dt, self.projectiles)
 
         self.check_attack_hit()
         self.check_monster_contact()
+        self.check_projectile_hit()
 
         for projectile in self.projectiles:
             projectile.update(dt)

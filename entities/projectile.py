@@ -2,6 +2,8 @@
 Projectile — the ball shot by the cursed tree monster.
 """
 
+import pygame
+
 import config
 
 
@@ -44,6 +46,16 @@ class Projectile:
             or self.y > config.SCREEN_HEIGHT + margin
         ):
             self.alive = False
+
+    def get_hitbox(self):
+        """Return a collision rect around the projectile center."""
+        size = config.DISPLAY_SIZE // 2
+        return pygame.Rect(
+            self.x - size,
+            self.y - size,
+            config.DISPLAY_SIZE,
+            config.DISPLAY_SIZE,
+        )
 
     def draw(self, surface):
         sprite = self.assets.ball_sprites[self.frame]

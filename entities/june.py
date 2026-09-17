@@ -96,7 +96,7 @@ class June(Entity):
     # UPDATE
     # ========================================================
 
-    def update(self, dt, is_practice=True):
+    def update(self, dt):
         if self.damage_cooldown > 0:
             self.damage_cooldown -= dt
 
